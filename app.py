@@ -7,7 +7,7 @@ import gunicorn                     #whilst your local machine's webserver doesn
 from whitenoise import WhiteNoise   #for serving static files on Heroku
 
 # Instantiate dash app
-app = Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
+app = Dash(__name__)
 
 # Reference the underlying flask app (Used by gunicorn webserver in Heroku production deployment)
 server = app.server 
