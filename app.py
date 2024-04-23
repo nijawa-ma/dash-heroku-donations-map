@@ -7,12 +7,14 @@ import matplotlib as mpl
 import gunicorn                     #whilst your local machine's webserver doesn't need this, Heroku's linux webserver (i.e. dyno) does. I.e. This is your HTTP server
 from whitenoise import WhiteNoise   #for serving static files on Heroku
 import json
+import flask
 
 # Instantiate dash app
 app = Dash(__name__)
 
 # Reference the underlying flask app (Used by gunicorn webserver in Heroku production deployment)
-server = app.server 
+server = flask.Flask(__name__)
+#server = app.server 
 
 #Import counties polygons as json
 with open(r'gz_2010_us_050_00_20m.json', 'r') as f:
@@ -92,7 +94,6 @@ app.layout = html.Div([
 def update_map(selected_party, selected_state, stored_data, stored_geojson):
     filtered_df=pd.DataFrame(stored_data)
     geojson = stored_geojson
-    #print(geojson)
 
     if selected_state == 'All':
         # If 'All' is selected, use the entire DataFrame
@@ -102,7 +103,6 @@ def update_map(selected_party, selected_state, stored_data, stored_geojson):
         filtered_df = filtered_df[filtered_df['state'] == selected_state] if 'state' in filtered_df.columns else pd.DataFrame()
 
     # Generate the choropleth map using the filtered DataFrame and stored GeoJSON
-    print(filtered_df.head())
     return generate_choropleth(filtered_df, selected_party, geojson)
 
 # Run flask app
