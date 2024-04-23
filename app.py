@@ -15,7 +15,7 @@ app = Dash(__name__)
 server = app.server 
 
 #Import counties polygons as json
-with open(r'C:\Users\NickWard\OneDrive\Apps\DonationsMap\dash-heroku-donations-map\gz_2010_us_050_00_20m.json', 'r') as f:
+with open(r'gz_2010_us_050_00_20m.json', 'r') as f:
     counties = json.load(f)
 
 #Create and append FIPS codes to the counties in the json data
@@ -27,7 +27,7 @@ for feature in counties['features']:
     feature['properties']['FIPS'] = fips_code
 
 #Load the donations data and county information
-df = pd.read_csv(r'C:\Users\NickWard\OneDrive\Apps\DonationsMap\dash-heroku-donations-map\DATA FOR APP v2.csv', dtype = {'FIPS': str})
+df = pd.read_csv(r'DATA FOR APP v2.csv', dtype = {'FIPS': str})
 states = sorted(df['state'].unique())
 state_options = [{'label': 'All', 'value': 'All'}] + [{'label': state, 'value': state} for state in states]
 
